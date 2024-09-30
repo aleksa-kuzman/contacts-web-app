@@ -1,1 +1,20 @@
-<p>login works!</p>
+<div class="w-full flex flex-col items-center h-full justify-center">
+
+<mat-card class="flex flex-col items-center max-w-[500px]">
+    <mat-card-header >
+        <mat-card-title class="text-center">Login</mat-card-title>
+        <mat-card-subtitle>Enter your credentials</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content fxLayout="column">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Enter your email" type="email" required="true">
+
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Enter password" type="password" required="true">
+    </mat-card-content>
+
+    <mat-card-footer>
+        <button color="primary" mat-button>Log in</button>
+    </mat-card-footer>
+</mat-card>
+</div>

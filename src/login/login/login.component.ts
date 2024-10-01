@@ -5,7 +5,8 @@ import { AuthService } from '../../app/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { serialize } from 'v8';
 import { HttpClientModule } from '@angular/common/http';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -24,15 +25,21 @@ export class LoginComponent {
   myForm: FormGroup;
   test: any;
 
-  constructor(private service:AuthService, private fb: FormBuilder){
+  constructor(private service:AuthService, private fb: FormBuilder, private router: Router){
       this.myForm = this.fb.group({
-
+          email:['',[Validators.required, Validators.email]],
+          password: ['', [Validators.required,Validators.minLength(6)]]
       })
   }
-onSubmit() {
- console.log("TEST")
 
-  this.service.getData().subscribe({
+  ngOnInit(){
+    if(this.service.getToken("jwt") !== null){
+      this.router.navigate(["/home"]);
+    }
+  }
+onSubmit() {
+ 
+  this.service.authorize(this.myForm.get("email")?.value, this.myForm.get("password")?.value).subscribe({
     next:(data)=>{
        this.service.setTokenToLocalStorage(data.jwt);
     },

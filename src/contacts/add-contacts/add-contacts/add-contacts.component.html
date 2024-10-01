@@ -1,0 +1,25 @@
+<div class="w-full flex flex-col items-center h-full justify-center">
+    <form [formGroup]="insertForm" (ngSubmit)="onSubmit()">
+    
+    <mat-card class="flex flex-col items-center max-w-[700px]">
+        <mat-card-header >
+            <mat-card-title class="text-center">Insert new contact</mat-card-title>
+            <mat-card-subtitle>add details</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="flex flex-col items-center ">
+            <mat-label>Phone number</mat-label>
+            <input matInput formControlName="phoneNumber" placeholder="enter phone number" type="text" required="true">
+    
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter name" type="text" required="true">
+        </mat-card-content>
+
+        <mat-card-footer>
+            <button color="primary" mat-button type="submit">Submit</button>
+        </mat-card-footer>
+    </mat-card>
+</form>
+
+</div> 
+

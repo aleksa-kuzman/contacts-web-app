@@ -15,7 +15,6 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatButtonModule,
     MatInputModule,
-    HttpClientModule,
   ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
@@ -34,7 +33,6 @@ export class LoginComponent {
 
   ngOnInit(){
     if(this.service.getToken("jwt") !== null){
-      this.router.navigate(["/home"]);
     }
   }
 onSubmit() {
@@ -42,6 +40,7 @@ onSubmit() {
   this.service.authorize(this.myForm.get("email")?.value, this.myForm.get("password")?.value).subscribe({
     next:(data)=>{
        this.service.setTokenToLocalStorage(data.jwt);
+       this.router.navigate(["/home"]);
     },
     error: (err) =>{
       console.log("error",err)

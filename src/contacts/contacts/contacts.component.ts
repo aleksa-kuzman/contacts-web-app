@@ -1,34 +1,65 @@
 import { Component } from '@angular/core';
 import { MatCell, MatHeaderCell, MatHeaderRow, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ContactsService } from '../../services/contacts.service';
+import { HttpClient } from '@angular/common/http';
+import { MatIconButton } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [MatTableModule, MatHeaderCell,MatCell, MatHeaderRow],
+  imports: [MatTableModule, MatHeaderCell,MatCell, MatHeaderRow,MatIconModule],
+  providers:[ContactsService],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.css'
+  
 })
 export class ContactsComponent {
+  public mydata: MatTableDataSource<any> = new MatTableDataSource();
 
-  public displayColumns = ["email","name", "phone"] 
+  constructor(private contactService: ContactsService, private router: Router){
+  }
+  ngOnInit(){
+    var dataSource = new MatTableDataSource()
+     this.contactService.getContacts().subscribe({
+      next:(data:any) =>{
+        console.log(data);
+        this.mydata = new MatTableDataSource(data);
+      },
+      error: (err: any) =>{
+        console.log("error",err)
+      }
+     });
+  }
+  public displayColumns = ["id","name", "phoneNumber","deleteContact","editContact"] 
 
-  public mydata: MatTableDataSource<any> = new MatTableDataSource( [
-    {email: "aleksa.kuzman.996@gmail.com", name: "Aleksa", phone: "0640052060"},
-    {email: "john.doe@example.com", name: "John", phone: "1234567890"},
-    {email: "jane.smith@example.com", name: "Jane", phone: "9876543210"},
-    {email: "mike.johnson@example.com", name: "Mike", phone: "5551234567"},
-    {email: "emily.brown@example.com", name: "Emily", phone: "7778889999"},
-    {email: "david.wilson@example.com", name: "David", phone: "3334445555"},
-    {email: "sarah.taylor@example.com", name: "Sarah", phone: "6667778888"},
-    {email: "chris.anderson@example.com", name: "Chris", phone: "2223334444"},
-    {email: "lisa.martinez@example.com", name: "Lisa", phone: "8889990000"},
-    {email: "robert.garcia@example.com", name: "Robert", phone: "4445556666"},
-    {email: "jennifer.lopez@example.com", name: "Jennifer", phone: "1112223333"},
-    {email: "william.clark@example.com", name: "William", phone: "9990001111"},
-    {email: "olivia.rodriguez@example.com", name: "Olivia", phone: "7776665555"},
-    {email: "james.lee@example.com", name: "James", phone: "3332221111"},
-    {email: "emma.gonzalez@example.com", name: "Emma", phone: "5554443333"}
-  ]);
+  delete(id: any) {
+      this.contactService.deleteContact(id).subscribe({
+        next:(data:any) =>{
+          // Remove the deleted contact from the data source
+          this.mydata.data = this.mydata.data.filter(contact => contact.id !== id);
+          // Refresh the table
+          this.mydata._updateChangeSubscription();
+          console.log("Contact deleted successfully");
+        },
+        error: (err: any) =>{
+          console.log("error",err)
+        }
+      })
+  }
+
+  edit(id: any) {
+    var object = this.mydata.data.filter(m =>m.id === id );
+    console.log("OBJ",object);
+    this.router.navigate(["/contacts/add"],{state: {contact: object}})
+    }
+
+  goToAdd() {
+    this.router.navigate(["/contacts/add"])
+    }
+    
+
 
 }

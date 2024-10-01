@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   
 })
 export class ContactsComponent {
+
   public mydata: MatTableDataSource<any> = new MatTableDataSource();
 
   constructor(private contactService: ContactsService, private router: Router){
@@ -55,6 +56,13 @@ export class ContactsComponent {
     console.log("OBJ",object);
     this.router.navigate(["/contacts/add"],{state: {contact: object}})
     }
+
+    logOut() {
+      if(typeof(window) !== undefined )
+        console.log("logout")
+        window.localStorage.removeItem("jwt");
+        this.router.navigate(["/contacts/add"])
+      }
 
   goToAdd() {
     this.router.navigate(["/contacts/add"])

@@ -7,16 +7,31 @@ import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/api'
+  private apiUrl = 'http://localhost:5003/api/'
+  private userEndpoint = 'user/authorize'
   
   constructor(private http: HttpClient) { }
 
   public  getData(): Observable<any> {
-    
-      return this.http.get<any>(this.apiUrl).pipe(catchError(this.handleError));
+     let obj = {
+      email : "aleksa.kuzman.996@gmail.com",
+      password: "password"
+     }
+      return this.http.post<any>(this.apiUrl+this.userEndpoint,obj).pipe(catchError(this.handleError));
    
   }
+
+  public setTokenToLocalStorage(jwt: string)
+  {
+    localStorage.setItem("jwt",jwt);
+  }
+
+  public getToken()
+  {
+    localStorage.getItem("jwt");
+  }
+
   public handleError(error: HttpErrorResponse){
-      return throwError("Error occured");
+      return throwError("Error occured"+ error.message);
   }
 }

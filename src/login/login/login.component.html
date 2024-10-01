@@ -1,4 +1,5 @@
 <div class="w-full flex flex-col items-center h-full justify-center">
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
 
 <mat-card class="flex flex-col items-center max-w-[500px]">
     <mat-card-header >
@@ -14,7 +15,9 @@
     </mat-card-content>
 
     <mat-card-footer>
-        <button color="primary" mat-button>Log in</button>
+        <button color="primary" mat-button type="submit">Log in</button>
     </mat-card-footer>
 </mat-card>
+</form>
+
 </div>

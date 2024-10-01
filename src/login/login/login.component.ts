@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {MatInputModule} from '@angular/material/input'; 
 import {  MatCardModule } from '@angular/material/card';
-import { AuthService } from '../../app/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { serialize } from 'v8';
 import { HttpClientModule } from '@angular/common/http';
